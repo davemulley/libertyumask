@@ -1,6 +1,17 @@
+#----
+# Build stage
+#----
+FROM maven:3.5-jdk-8 as buildstage
+# Copy only pom.xml of your projects and download dependencies
+COPY pom.xml .
+RUN mvn -B -f pom.xml dependency:go-offline
+# Copy all other project files and build project
+COPY . .
+RUN mvn -B install
+
 FROM openliberty/open-liberty:springBoot2-ubi-min as staging
 USER root
-COPY target/liberty-umask-0.0.1-SNAPSHOT.jar /staging/fatHello.jar
+COPY --from=buildstage ./target/liberty-umask-0.0.1-SNAPSHOT.jar /staging/fatHello.jar
 
 RUN springBootUtility thin \
  --sourceAppPath=/staging/fatHello.jar \
