@@ -19,8 +19,8 @@ RUN springBootUtility thin \
  --targetLibCachePath=/staging/lib.index.cache
 
 FROM openliberty/open-liberty:kernel-java8-openj9-ubi
-COPY --chown:1001:0 --from=staging /staging/lib.index.cache /opt/ol/wlp/usr/shared/resources/lib.index.cache
-COPY --chown:1001:0 --from=staging /staging/thinHello.jar /config/dropins/spring/thinHello.jar
+COPY --chown=1001:0 --from=staging /staging/lib.index.cache /opt/ol/wlp/usr/shared/resources/lib.index.cache
+COPY --chown=1001:0 --from=staging /staging/thinHello.jar /config/dropins/spring/thinHello.jar
 COPY ./server.env /config/server.env
 
 #RUN chown -R 1001.0 /config && chmod -R g+rw /config && chown -R 1001.0 /opt/ol/wlp/usr/shared/resources/lib.index.cache && chmod -R g+rw /opt/ol/wlp/usr/shared/resources/lib.index.cache
